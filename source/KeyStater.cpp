@@ -31,6 +31,7 @@ void KeyStater::Update()
 	GetCursorPos(&curs);
 	ScreenToClient(thiswindow, &curs);
 }
+
 void KeyStater::Debug()
 {
 	if (IsPressed(VK_F5))
@@ -49,6 +50,7 @@ void KeyStater::Debug()
 		}
 	}
 }
+
 bool KeyStater::IsUp(int key)
 {
 	if (curStates[key] < 2 && oldStates[key] < 2)
