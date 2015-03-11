@@ -1,5 +1,4 @@
 ﻿#include "AIE.h"
-#include <iostream>
 #include "KeyStater.h"
 
 using namespace std;

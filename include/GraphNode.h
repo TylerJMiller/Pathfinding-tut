@@ -1,5 +1,5 @@
-#ifndef GRAPHNODE_H
-#define GRAPHNODE_H
+#ifndef GRAPHNODE_H_
+#define GRAPHNODE_H_
 
 #include <string>
 #include <vector>
@@ -7,11 +7,12 @@
 
 class GraphNode
 {
+	typedef std::vector<Edge> EdgeList;
 public:
 	GraphNode(int a_iNum);
-	int m_iNodeNumber;
-	typedef std::vector<Edge> EdgeList;
-	EdgeList m_aEdges;
+	int mNodeNumber;
+	bool mVisited;
+	EdgeList mEdges;
 };
 
 #endif

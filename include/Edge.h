@@ -1,12 +1,14 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#include "GraphNode.h"
+class GraphNode;
 
 struct Edge
 {
-	GraphNode* m_pStart, m_pEnd;
-	float m_fCost;
+	Edge();
+	GraphNode* mStart;
+	GraphNode* mEnd;
+	float mCost;
 };
 
 #endif

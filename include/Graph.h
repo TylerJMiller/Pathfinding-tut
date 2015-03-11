@@ -7,13 +7,19 @@ class Graph
 {
 	typedef std::vector<GraphNode*> NodeList;
 public:
+	//creates an empty graph
 	Graph();
+	//creates a graph with given number of nodes, random edges
 	Graph(unsigned int a_uiNodeCount);
 
-	void AddNode(GraphNode* a_pNode);
-	void RemoveNode(GraphNode* a_pNode);
+	void AddNode(GraphNode* aNode);
+	void RemoveNode(GraphNode* aNode);
+	void ResetVisited();
+
+	bool SearchDFS(GraphNode* aStart, GraphNode* aEnd);
+
 private:
-	NodeList m_aNodes;
+	NodeList mNodes;
 };
 
 
