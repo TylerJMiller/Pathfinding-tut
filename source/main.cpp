@@ -1,5 +1,6 @@
 ﻿#include "AIE.h"
 #include "KeyStater.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ int maxWidth = 500;
 int maxHeight = 500;
 void Load(), Update(), Draw();
 KeyStater Keys;
+Graph theGraph(5);
 
 int main(int argc, char* argv[])
 {

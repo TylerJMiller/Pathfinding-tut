@@ -1,8 +1,6 @@
 #ifndef GRAPHNODE_H_
 #define GRAPHNODE_H_
 
-#include <string>
-#include <vector>
 #include "Edge.h"
 
 class GraphNode

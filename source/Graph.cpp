@@ -1,7 +1,10 @@
 #include "Graph.h"
 
+Graph::Graph()
+{};
+
 Graph::Graph(unsigned int aNodeCount)
-{
+{ 
 	mNodes.resize(aNodeCount);
 }
 
@@ -35,5 +38,7 @@ void Graph::ResetVisited()
 
 bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 {
+	std::stack<GraphNode*> oNodeStack;
+	oNodeStack.push(aStart);
 	return false;
 }
