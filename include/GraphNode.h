@@ -7,8 +7,10 @@ class GraphNode
 {
 	typedef std::vector<Edge> EdgeList;
 public:
-	GraphNode(int a_iNum);
-	int mNodeNumber;
+	GraphNode(int aNum, float ax, float ay);
+	void AddEdgeTo(GraphNode* aEnd);
+	unsigned int mNodeNumber, mState;
+	float mX, mY;
 	bool mVisited;
 	EdgeList mEdges;
 };

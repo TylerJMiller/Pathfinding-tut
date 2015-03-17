@@ -30,6 +30,7 @@ void KeyStater::Update()
 	GetKeyboardState(curStates);
 	GetCursorPos(&curs);
 	ScreenToClient(thiswindow, &curs);
+	curs.y = 500 - curs.y;
 }
 
 void KeyStater::Debug()

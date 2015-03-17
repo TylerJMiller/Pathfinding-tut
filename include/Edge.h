@@ -3,7 +3,9 @@
 
 #include <string>
 #include <vector>
-#include <stack>
+#include <queue>
+#include <math.h>
+#include "AIE.h"
 
 class GraphNode;
 
@@ -12,7 +14,6 @@ struct Edge
 	Edge();
 	GraphNode* mStart;
 	GraphNode* mEnd;
-	float mCost;
 };
 
 #endif

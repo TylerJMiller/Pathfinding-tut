@@ -40,6 +40,8 @@
 #define VK_Y 0x59
 #define VK_Z 0x5A
 
+
+
 class KeyStater
 {
 private:
@@ -60,6 +62,5 @@ public:
 	bool IsPressed(int key);
 	bool IsReleased(int key);
 };
-
 
 #endif
