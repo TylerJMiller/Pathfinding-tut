@@ -24,20 +24,6 @@ public:
 	}
 };
 
-//COLLISION, PATH, DRAW
-void Finder(int** &c, int** &f, int** &d, int x, int y) 
-{
-	for (int i = 0; i < 10; i++)
-	{
-		for (int ii = 0; ii < 10; ii++)
-		{
-			c[i][ii] = 0;
-		}
-	}
-
-}
-
-
 int maxWidth = 500;
 int maxHeight = 500;
 void Load(), Update(), Draw();
@@ -47,9 +33,97 @@ const int mapHeight = 10;
 const int tileSize = 50;
 int hitMap[mapHeight][mapWidth];
 int findMap[mapHeight][mapWidth];
-int drawPath[mapHeight][mapWidth];
+int pathMap[mapHeight][mapWidth];
 Entity hunter, target;
 
+//COLLISION, FINDER/POINT, PATH
+int Finder(int** &c, int** &f, int** &p) 
+{
+	for (int n = 1; n != -1; n++)
+	{
+
+		int testnum = 0;
+
+		for (int i = 0; i < 10; i++)
+		{
+
+			for (int ii = 0; ii < 10; ii++)
+			{
+
+				if (p[i][ii] == n && c[i][ii] != 1)
+				{
+					if (i < 9)
+					{
+						if (f[i + 1][ii] == -1)
+						{
+							if (n > 1)
+								c[i][ii] = 2;
+							return p[i][ii];
+						}
+						if (p[i + 1][ii] == 0 && c[i + 1][ii] != 1)		//DOWN
+						{
+							p[i + 1][ii] = n + 1;
+							testnum++;
+						}
+					}
+					if (i > 0)
+					{
+						if (f[i - 1][ii] == -1)
+						{
+							if (n > 1)
+								c[i][ii] = 2;
+							return p[i][ii];
+						}
+						if (p[i - 1][ii] == 0 && c[i - 1][ii] != 1)		//UP
+						{
+							p[i - 1][ii] = n + 1;
+							testnum++;
+						}
+					}
+					if (ii < 9)
+					{
+						if (f[i][ii + 1] == -1)
+						{
+							if (n > 1)
+								c[i][ii] = 2;
+							return p[i][ii];
+						}
+						if (p[i][ii + 1] == 0 && c[i][ii + 1] != 1)		//RIGHT
+						{
+							p[i][ii + 1] = n + 1;
+							testnum++;
+						}
+					}
+					if (ii > 0)
+					{
+						if (f[i][ii - 1] == -1)
+						{
+							if (n > 1)
+								c[i][ii] = 2;
+							return p[i][ii];
+						}
+						if (p[i][ii - 1] == 0 && c[i][ii - 1] != 1)		//LEFT
+						{
+							p[i][ii - 1] = n + 1;
+							testnum++;
+						}
+					}
+
+				}
+
+
+
+			}
+
+		}
+
+		if (testnum == 0)
+		{
+			n = -2;
+		}
+	}
+	return 0;
+}
 
 int main(int argc, char* argv[])
 {
@@ -81,7 +155,7 @@ int main(int argc, char* argv[])
 			{
 				hitMap[i][ii] = 0;
 				findMap[i][ii] = 0;
-				drawPath[i][ii] = 0;
+				pathMap[i][ii] = 0;
 			}
 		}
 
@@ -91,8 +165,9 @@ int main(int argc, char* argv[])
 		hunter.Set(0, 0, CreateSprite("./images/hunter.png", 24, 24, false, SColour(255, 255, 255, 255)));
 		target.Set(9, 9, CreateSprite("./images/target.png", 24, 24, false, SColour(255, 255, 255, 255)));
 
-		findMap[hunter.y][hunter.x] = -1;
-		findMap[target.y][target.x] = -2;
+		findMap[hunter.y][hunter.x] = 1;
+		pathMap[hunter.y][hunter.x] = 1;
+		findMap[target.y][target.x] = -1;
 	}
 
 	void Update()
@@ -109,9 +184,11 @@ int main(int argc, char* argv[])
 			if (findMap[(int)(Keys.curs.y / tileSize)][(int)(Keys.curs.x / tileSize)] == 0)
 			{
 				findMap[hunter.y][hunter.x] = 0;
+				pathMap[hunter.y][hunter.x] = 0;
 				hunter.x = (int)(Keys.curs.x / tileSize);
 				hunter.y = (int)(Keys.curs.y / tileSize);
-				findMap[hunter.y][hunter.x] = -1;
+				findMap[hunter.y][hunter.x] = 1;
+				pathMap[hunter.y][hunter.x] = 1;
 			}
 		}
 		if (Keys.IsPressed(VK_D) && (int)(Keys.curs.y / tileSize) < mapWidth && (int)(Keys.curs.x / tileSize) < mapHeight)
@@ -121,10 +198,21 @@ int main(int argc, char* argv[])
 				findMap[target.y][target.x] = 0;
 				target.x = (int)(Keys.curs.x / tileSize);
 				target.y = (int)(Keys.curs.y / tileSize);
-				findMap[target.y][target.x] = -2;
+				findMap[target.y][target.x] = -1;
 			}
 		}
-
+		if (Keys.IsPressed(VK_B))
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				for (int ii = 0; ii < 10; ii++)
+				{
+					hitMap[i][ii] = 0;
+					pathMap[i][ii] = 0;
+				}
+			}
+			pathMap[hunter.y][hunter.x] = 1;
+		}
 		if (Keys.IsPressed(VK_SPACE))
 		{
 			int** aa;
@@ -154,17 +242,50 @@ int main(int argc, char* argv[])
 				{
 					aa[i][ii] = hitMap[i][ii];
 					bb[i][ii] = findMap[i][ii];
-					cc[i][ii] = drawPath[i][ii];
+					cc[i][ii] = pathMap[i][ii];
 				}
 			}
-			Finder(aa, bb, cc, mapWidth, mapHeight);
+			int t = Finder(aa, bb, cc);
+			if (t != 0)
+			{
+				while (t > 2)
+				{
+					for (int i = 0; i < 10; i++)
+					{
+						for (int ii = 0; ii < 10; ii++)
+						{
+							if (cc[i][ii] == t && aa[i][ii] == 2)
+							{
+								if (cc[i + 1][ii] == t - 1)
+								{
+									aa[i + 1][ii] = 2;
+								}
+								else if(cc[i - 1][ii] == t - 1)
+								{
+									aa[i - 1][ii] = 2;
+								}
+								else if (cc[i][ii + 1] == t - 1)
+								{
+									aa[i][ii + 1] = 2;
+								}
+								else if (cc[i][ii - 1] == t - 1)
+								{
+									aa[i][ii - 1] = 2;
+								}
+							}
+						}
+					}
+					t--;
+				}
+			}
+			
 			for (int i = 0; i < 10; i++)
 			{
 				for (int ii = 0; ii < 10; ii++)
 				{
 					hitMap[i][ii] = aa[i][ii];
 					findMap[i][ii] = bb[i][ii];
-					drawPath[i][ii] = cc[i][ii];
+					pathMap[i][ii] = cc[i][ii];
 				}
 			}
 		}
@@ -187,8 +308,8 @@ int main(int argc, char* argv[])
 				DrawString(keyHold, (tileSize * i), maxWidth - (tileSize * a) + 2, SColour(255, 200, 100, 255));
 				_itoa_s(findMap[a][i], keyHold, 10);
 				DrawString(keyHold, (tileSize * i) + 24, maxWidth - (tileSize * a), SColour(255, 255, 255, 255));
-				_itoa_s(drawPath[a][i], keyHold, 10);
-				DrawString(keyHold, (tileSize * i), maxWidth - (tileSize * a) - 22, SColour(200, 200, 255, 255));
+				//_itoa_s(pathMap[a][i], keyHold, 10);
+				//DrawString(keyHold, (tileSize * i), maxWidth - (tileSize * a) - 22, SColour(200, 200, 255, 255));
 			}
 		}
 
