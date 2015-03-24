@@ -10,7 +10,7 @@ public:
 	GraphNode(int aNum, float ax, float ay);
 	void AddEdgeTo(GraphNode* aEnd);
 	bool mWall;
-	unsigned int mNodeNumber, mState;
+	unsigned int mNodeNumber, mState, mPath;
 	float mX, mY;
 	bool mVisited;
 	EdgeList mEdges;

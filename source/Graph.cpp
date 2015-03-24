@@ -107,8 +107,8 @@ void Graph::ResetVisited()
 bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 {
 	std::queue<GraphNode*> oNodeStack;
+	aStart->mPath = 0;
 	oNodeStack.push(aStart);
-	int i = 0;
 	while (!oNodeStack.empty())
 	{
 		GraphNode* pCurrent = oNodeStack.front();
@@ -117,17 +117,20 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		{
 			continue;
 		}
+		pCurrent->mState = 2;
+		pCurrent->mVisited = true;
 		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
 		{
-			ResetVisited();
+			pCurrent->mState = 3;
+			pCurrent->mVisited = true;
 			return true;
 		}
 		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
 		{
+			if (!pCurrent->mEdges[i].mEnd->mVisited)
+				pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
 			oNodeStack.push(pCurrent->mEdges[i].mEnd);
 		}
-
-		pCurrent->mVisited = true;
 	}
 	ResetVisited();
 	return false;
@@ -135,7 +138,18 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 
 void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 {
-
+	GraphNode* pCurrent = aEnd;
+	for (int j = 0; j < pCurrent->mEdges.size(); j++)
+	{
+		if (pCurrent->mEdges[j].mEnd->mPath == pCurrent->mPath - 1)
+		{
+			if (pCurrent->mPath == 1)
+				return;
+			pCurrent->mEdges[j].mEnd->mState = 3;
+			pCurrent = pCurrent->mEdges[j].mEnd;
+			j = -1;
+		}
+	}
 }
 
 void Graph::Draw()

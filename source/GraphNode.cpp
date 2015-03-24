@@ -8,6 +8,7 @@ GraphNode::GraphNode(int aNum, float aX, float aY)
 	mVisited = false;
 	mState = 0;
 	mEdges.resize(0);
+	mPath = -1;
 
 }
 

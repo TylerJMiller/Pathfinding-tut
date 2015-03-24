@@ -52,12 +52,17 @@ int main(int argc, char* argv[])
 		{
 			if (theGraph.SearchDFS(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]))
 			{
-				int i = 1;
+				theGraph.Dijkstra(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]);
 			}
 		}
 		if (Keys.IsPressed(VK_O))
 		{
 			int i = 0;
+		}
+		if (Keys.IsPressed(VK_LBUTTON))
+		{
+			if (Keys.curs.y > graphY - tileSize && Keys.curs.y < graphY + (tileSize * (graphH)) - tileSize &&  Keys.curs.x > graphX && Keys.curs.x < graphY + (tileSize * graphW))
+				theTank.move(Keys.curs.x,Keys.curs.y);
 		}
 		if (Keys.IsDown(VK_RBUTTON))
 		{

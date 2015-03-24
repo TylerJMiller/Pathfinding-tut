@@ -1,5 +1,6 @@
 #include "KeyStater.h"
 #include "AIE.h"
+#include "Util.h"
 
 KeyStater::KeyStater()
 {
@@ -30,7 +31,7 @@ void KeyStater::Update()
 	GetKeyboardState(curStates);
 	GetCursorPos(&curs);
 	ScreenToClient(thiswindow, &curs);
-	curs.y = 500 - curs.y;
+	curs.y = maxHeight - curs.y;
 }
 
 void KeyStater::Debug()

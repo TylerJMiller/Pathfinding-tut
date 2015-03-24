@@ -6,7 +6,11 @@ void Tank::init(int ax, int ay, unsigned int asprite)
 	gridY = ay;
 	sprite = asprite;
 }
-
+void Tank::move(int ax, int ay)
+{
+	gridX = (int)((ax - graphX) / tileSize);
+	gridY = (int)((ay - graphY + tileSize) / tileSize);
+}
 int Tank::nodeNum()
 {
 	return gridX + (gridY * graphH);

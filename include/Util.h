@@ -9,13 +9,13 @@
 #include "KeyStater.h"
 #include "Tank.h"
 
-const int maxWidth = 500;
-const int maxHeight = 500;
+const int maxWidth = 1024;
+const int maxHeight = 720;
 
-const int tileSize = 50;
+const int tileSize = 10;
 
-const int graphW = 5;
-const int graphH = 5;
+const int graphW = 30;
+const int graphH = 30;
 
 const int graphX = 100;
 const int graphY = 100;
