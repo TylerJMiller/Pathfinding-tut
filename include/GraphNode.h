@@ -9,6 +9,7 @@ class GraphNode
 public:
 	GraphNode(int aNum, float ax, float ay);
 	void AddEdgeTo(GraphNode* aEnd);
+	bool mWall;
 	unsigned int mNodeNumber, mState;
 	float mX, mY;
 	bool mVisited;

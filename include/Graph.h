@@ -9,16 +9,19 @@ class Graph
 public:
 	//creates an empty graph
 	Graph();
+	~Graph();
 	//creates a grid with gridsize, x start, y start, tile size
 	Graph(unsigned int a_uiNodeCount, float aX, float Ay, unsigned int aTileSize);
 	Graph(unsigned int aGridW, unsigned int aGridH, float aX, float aY, unsigned int aTileSize);
 	//adds node to the end
 	void AddNode(GraphNode* aNode);
-	//adds node to end of grid
-	//void AddGridNode();
+	
+	//turns given node into wall and removes edges
+	bool TurnWall(GraphNode* aNode);
 
 	//removes specified node
 	void RemoveNode(GraphNode* aNode);
+
 	//outputs neighbor nodes
 	void PrintNeighbors(GraphNode* aNode);
 	void ResetVisited();

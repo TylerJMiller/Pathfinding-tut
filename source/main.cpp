@@ -1,25 +1,20 @@
 ﻿#include "Graph.h"
-#include "KeyStater.h"
 
 using namespace std;
 
-//MOVE ME TO A CLASS
-
-int maxWidth = 500;
-int maxHeight = 500;
-void Load(), Update(), Draw();
-Graph theGraph(4,6,100,100,50);
+Graph theGraph(graphW, graphH, graphX, graphY,tileSize);
 KeyStater Keys;
+
 int main(int argc, char* argv[])
 {
 	Load();
 	//Game Loop
 	do
 	{
-		Update();
-		Draw();
 		if (Keys.IsPressed(VK_ESCAPE))
 			return 0;
+		Update();
+		Draw();
 	} while (!FrameworkUpdate());
 
 	Shutdown();
@@ -31,11 +26,11 @@ int main(int argc, char* argv[])
 	void Load()
 	{
 		Initialise(maxWidth, maxHeight, false, "PATHING");
+		SetFont("./fonts/arial.fnt");
 		SetBackgroundColour(SColour(0, 0, 0, 255));
 		Keys.Initialize();
-		CreateSprite("./images/good.png", 49, 49, false, SColour(255, 255, 255, 255));
-		CreateSprite("./images/bad.png", 49, 49, false, SColour(255, 255, 255, 255));
-		//theGraph.AddNode(GraphNode())
+		CreateSprite("./images/good.png", tileSize - 1, tileSize - 1, false, SColour(255, 255, 255, 255));
+		CreateSprite("./images/bad.png", tileSize - 1, tileSize - 1, false, SColour(255, 255, 255, 255));
 	}
 	
 	void Update()
@@ -47,9 +42,19 @@ int main(int argc, char* argv[])
 		}
 		if (Keys.IsPressed(VK_L))
 		{
-			theGraph.SearchDFS(theGraph.mNodes[0], theGraph.mNodes[2]);
-		}
+			if (theGraph.SearchDFS(theGraph.mNodes[1], theGraph.mNodes[10]))
+			{
 
+			}
+		}
+		if (Keys.IsPressed(VK_O))
+		{
+			int i = 0;
+		}
+		if (Keys.IsPressed(VK_LBUTTON))
+		{
+			theGraph.TurnWall(theGraph.mNodes[(int)((((int)(Keys.curs.y -  graphY)/tileSize) * graphW) + ((Keys.curs.x - graphX)/tileSize ))]);
+		}
 	}
 
 	void Draw()
@@ -63,5 +68,4 @@ int main(int argc, char* argv[])
 		DrawString(mousex, 350, 350, SColour(129, 129, 129, 255));
 		Keys.Debug();
 		ClearScreen();
-
 	}

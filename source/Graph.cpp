@@ -1,7 +1,15 @@
 #include "Graph.h"
 
 Graph::Graph()
-{};
+{
+
+}
+
+Graph::~Graph()
+{
+	for (int i = 0; i < mNodes.size(); i++)
+		delete mNodes[i];
+}
 
 Graph::Graph(unsigned int aNodeCount, float aX, float aY, unsigned int aTileSize)
 { 
@@ -10,8 +18,8 @@ Graph::Graph(unsigned int aNodeCount, float aX, float aY, unsigned int aTileSize
 	mTileSize = aTileSize;
 	mX = aX;
 	mY = aY;
-	mNodes.resize(mGridH * mGridW);
-	for (int i = 0; i < (mGridH * mGridW); i++)
+	mNodes.resize(aNodeCount);
+	for (int i = 0; i < (aNodeCount); i++)
 	{
 		float tY = ((int)(i / ceil(sqrt((mGridH * mGridW)))) * mTileSize);
 		float tX = (0 - ((((int)(i / ceil(sqrt((mGridH * mGridW)))) * ceil(sqrt((mGridH * mGridW)))) - (i))* mTileSize));
@@ -28,11 +36,11 @@ Graph::Graph(unsigned int aGridW, unsigned int aGridH, float aX, float aY, unsig
 	mX = aX;
 	mY = aY;
 	mNodes.resize(mGridH * mGridW);
-	for (int i = 0; i < mGridW; i++)
+	for (int i = 0; i < mGridH; i++)
 	{
-		for (int ii = 0; ii < mGridH; ii++)
+		for (int ii = 0; ii < mGridW; ii++)
 		{
-			mNodes[ii + (i * mGridH)] = new GraphNode(ii + (i * mGridH), mX + (ii * mTileSize), mY + (i * mTileSize));
+			mNodes[ii + (i * mGridW)] = new GraphNode(ii + (i * mGridW), mX + (ii * mTileSize), mY + (i * mTileSize));
 		}
 	}
 	EdgeMap();
@@ -51,19 +59,26 @@ void Graph::AddNode(GraphNode* aNode)
 //		));
 //}
 
-void Graph::RemoveNode(GraphNode* aNode)
+bool Graph::TurnWall(GraphNode* aNode)
 {
-	/*for (int i = 0; i < mNodes.size(); i++)
+	for (int i = 0; i < mNodes.size(); i++)
 	{
-		for (std::vector<Edge>::iterator it = mNodes[i]->mEdges.begin(); it != mNodes[i]->mEdges.end(); it++)
+		for (int ii = 0; ii < mNodes[i]->mEdges.size(); ii++)
 		{
-			if (&(*it->mEnd) == aNode)
+			if (mNodes[i]->mEdges[ii].mEnd == aNode)
 			{
-				mNodes[i]->mEdges.erase(it);
+				mNodes[i]->mEdges.erase(mNodes[i]->mEdges.begin() + ii);
 			}
 		}
-	}*/
+	}
+	//THIS IS WHERE YOU LEFT OFF NOW MAKE THIS SHIT NOT FUCKING DUMB (not retarded)
 
+	mNodes[aNode->mNodeNumber]->mState = 1;
+	return true;
+}
+
+void Graph::RemoveNode(GraphNode* aNode)
+{
 	for (int i = 0; i < mNodes.size(); i++)
 	{
 		for (int ii = 0; ii < mNodes[i]->mEdges.size(); ii++)
@@ -78,6 +93,8 @@ void Graph::RemoveNode(GraphNode* aNode)
 	mNodes.erase(mNodes.begin() + aNode->mNodeNumber);
 }
 
+
+
 void Graph::ResetVisited()
 {
 	for (int i = 0; i < mNodes.size(); i++)
@@ -90,6 +107,7 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 {
 	std::queue<GraphNode*> oNodeStack;
 	oNodeStack.push(aStart);
+	int i = 0;
 	while (!oNodeStack.empty())
 	{
 		GraphNode* pCurrent = oNodeStack.front();
@@ -98,7 +116,10 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		{
 			continue;
 		}
-
+		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
+		{
+			i = 1;
+		}
 		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
 		{
 			oNodeStack.push(pCurrent->mEdges[i].mEnd);
@@ -107,9 +128,8 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		pCurrent->mVisited = true;
 		pCurrent->mState = 1;
 	}
-
-
-
+	if (i == 1)
+		return true;
 	return false;
 }
 
@@ -130,9 +150,25 @@ void Graph::IsKill()
 
 void Graph::EdgeMap()
 {
+
+
 	if (mGridH * mGridW != mNodes.size())
 	{
+		//for (int i = 0; i < mGridW; i++)
+		//{
+		//	for (int ii = 0; ii < mGridH; ii++)
+		//	{
+		//		if (ii > 0)
+		//			mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
+		//		if (ii < mGridH - 1)
+		//			mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
+		//		if (i > 0)
+		//			mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
+		//		if (i < mGridW - 1)
+		//			mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
 
+		//	}
+		//}
 	}
 	else
 	{
@@ -140,19 +176,14 @@ void Graph::EdgeMap()
 		{
 			for (int ii = 0; ii < mGridH; ii++)
 			{
-				int ia = ii + (i * mGridH) - 1;
-				int ib = ii + (i * mGridH) + 1;
-				int ic = ii + ((i - 1) * mGridH);
-				int id = ii + ((i + 1) * mGridH);
-
-				if (ii > 0)
+				if (ii > 0 )
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
 				if (ii < mGridH - 1)
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
 				if (i > 0)
-					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * (mGridH - 1))]);
+					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
 				if (i < mGridW - 1)
-					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * (mGridH + 1))]);
+					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
 
 			}
 		}
