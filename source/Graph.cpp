@@ -61,6 +61,7 @@ void Graph::AddNode(GraphNode* aNode)
 
 bool Graph::TurnWall(GraphNode* aNode)
 {
+	mNodes[aNode->mNodeNumber]->mEdges.resize(0);
 	for (int i = 0; i < mNodes.size(); i++)
 	{
 		for (int ii = 0; ii < mNodes[i]->mEdges.size(); ii++)
@@ -71,8 +72,8 @@ bool Graph::TurnWall(GraphNode* aNode)
 			}
 		}
 	}
-	//THIS IS WHERE YOU LEFT OFF NOW MAKE THIS SHIT NOT FUCKING DUMB (not retarded)
 
+	mNodes[aNode->mNodeNumber]->mWall = 1;
 	mNodes[aNode->mNodeNumber]->mState = 1;
 	return true;
 }
@@ -118,7 +119,8 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		}
 		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
 		{
-			i = 1;
+			ResetVisited();
+			return true;
 		}
 		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
 		{
@@ -126,11 +128,14 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		}
 
 		pCurrent->mVisited = true;
-		pCurrent->mState = 1;
 	}
-	if (i == 1)
-		return true;
+	ResetVisited();
 	return false;
+}
+
+void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
+{
+
 }
 
 void Graph::Draw()
@@ -176,14 +181,18 @@ void Graph::EdgeMap()
 		{
 			for (int ii = 0; ii < mGridH; ii++)
 			{
+				int ia = ii + (i * mGridH) - 1;
+				int ib = ii + (i * mGridH) + 1;
+				int ic = ii + ((i - 1) * mGridH);
+				int id = ii + ((i + 1) * mGridH);
 				if (ii > 0 )
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
 				if (ii < mGridH - 1)
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
 				if (i > 0)
-					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
+					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + ((i - 1) * mGridH)]);
 				if (i < mGridW - 1)
-					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) + 1]);
+					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + ((i + 1) * mGridH)]);
 
 			}
 		}

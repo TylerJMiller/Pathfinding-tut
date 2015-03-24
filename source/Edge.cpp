@@ -1,4 +1,4 @@
-#include "GraphNode.h"
+#include "Edge.h"
 
 Edge::Edge()
 {

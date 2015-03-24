@@ -30,6 +30,7 @@ public:
 	
 	bool IsNeighbor();
 	bool SearchDFS(GraphNode* aStart, GraphNode* aEnd);
+	void Dijkstra(GraphNode* aStart, GraphNode* aEnd);
 	unsigned int mGridW, mGridH, mCurNode;
 	float mTileSize, mX, mY;
 	NodeList mNodes;
