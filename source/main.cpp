@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		Keys.Update();
 		if (Keys.IsPressed(VK_K))
 		{
-			if (theGraph.SearchDFS(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]))
+			if (theGraph.SearchSTAR(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]))
 			{
 
 			}
@@ -58,6 +58,10 @@ int main(int argc, char* argv[])
 		if (Keys.IsPressed(VK_O))
 		{
 			int i = 0;
+		}
+		if (Keys.IsPressed(VK_I))
+		{
+			theGraph.ResetVisited();
 		}
 		if (Keys.IsPressed(VK_LBUTTON))
 		{

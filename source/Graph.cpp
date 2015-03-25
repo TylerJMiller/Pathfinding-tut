@@ -101,6 +101,8 @@ void Graph::ResetVisited()
 	for (int i = 0; i < mNodes.size(); i++)
 	{
 		mNodes[i]->mVisited = false;
+		if (mNodes[i]->mState != 1)
+			mNodes[i]->mState = 0;
 	}
 }
 
@@ -152,6 +154,38 @@ void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 	}
 }
 
+bool Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
+{
+	std::queue<GraphNode*> oNodeStack;
+	aStart->mPath = 0;
+	oNodeStack.push(aStart);
+	while (!oNodeStack.empty())
+	{
+		GraphNode* pCurrent = oNodeStack.front();
+		oNodeStack.pop();
+		if (pCurrent->mVisited == true)
+		{
+			continue;
+		}
+		pCurrent->mState = 2;
+		pCurrent->mVisited = true;
+		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
+		{
+			pCurrent->mState = 3;
+			pCurrent->mVisited = true;
+			return true;
+		}
+		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
+		{
+			if (!pCurrent->mEdges[i].mEnd->mVisited)
+				pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
+			oNodeStack.push(pCurrent->mEdges[i].mEnd);
+		}
+	}
+	ResetVisited();
+	return false;
+}
+
 void Graph::Draw()
 {
 	for (int i = 0; i < mNodes.size(); i++)
@@ -169,8 +203,6 @@ void Graph::IsKill()
 
 void Graph::EdgeMap()
 {
-
-
 	if (mGridH * mGridW != mNodes.size())
 	{
 		//for (int i = 0; i < mGridW; i++)
