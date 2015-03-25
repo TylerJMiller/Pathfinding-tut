@@ -27,15 +27,16 @@ public:
 	void ResetVisited();
 	void Draw();
 	void IsKill();
-	
-	bool IsNeighbor();
-
+	//RETURNS TRUE IF astart CAN FIND aend
 	bool SearchDFS(GraphNode* aStart, GraphNode* aEnd);
-
-	bool SearchSTAR(GraphNode* aStart, GraphNode* aEnd);
-
+	//STAR SEARCH
+	void SearchSTAR(GraphNode* aStart, GraphNode* aEnd);
+	//DIJKSTRA SEARCH
 	void Dijkstra(GraphNode* aStart, GraphNode* aEnd);
 	unsigned int mGridW, mGridH, mCurNode;
+
+	float DistanceTo(GraphNode* aStart, GraphNode* aEnd);
+
 	float mTileSize, mX, mY;
 	NodeList mNodes;
 private:

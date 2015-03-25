@@ -17,8 +17,8 @@ const int tileSize = 10;
 const int graphW = 30;
 const int graphH = 30;
 
-const int graphX = 100;
-const int graphY = 100;
+const int graphX = 300;
+const int graphY = 300;
 
 void Load(), Update(), Draw();
 

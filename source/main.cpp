@@ -43,10 +43,7 @@ int main(int argc, char* argv[])
 		Keys.Update();
 		if (Keys.IsPressed(VK_K))
 		{
-			if (theGraph.SearchSTAR(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]))
-			{
-
-			}
+			theGraph.SearchSTAR(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]);
 		}
 		if (Keys.IsPressed(VK_L))
 		{
@@ -57,7 +54,8 @@ int main(int argc, char* argv[])
 		}
 		if (Keys.IsPressed(VK_O))
 		{
-			int i = 0;
+			int i = theGraph.DistanceTo(theGraph.mNodes[0], theGraph.mNodes[theGraph.mNodes.size() - 1]);
+			i = i;
 		}
 		if (Keys.IsPressed(VK_I))
 		{

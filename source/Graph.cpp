@@ -154,26 +154,28 @@ void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 	}
 }
 
-bool Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
+void Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
 {
 	std::queue<GraphNode*> oNodeStack;
 	aStart->mPath = 0;
 	oNodeStack.push(aStart);
 	while (!oNodeStack.empty())
 	{
-		GraphNode* pCurrent = oNodeStack.front();
+		GraphNode* pCurrent = oNodeStack.back();
 		oNodeStack.pop();
 		if (pCurrent->mVisited == true)
 		{
 			continue;
 		}
 		pCurrent->mState = 2;
+
 		pCurrent->mVisited = true;
+
 		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
 		{
 			pCurrent->mState = 3;
 			pCurrent->mVisited = true;
-			return true;
+			return;
 		}
 		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
 		{
@@ -182,8 +184,8 @@ bool Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
 			oNodeStack.push(pCurrent->mEdges[i].mEnd);
 		}
 	}
-	ResetVisited();
-	return false;
+	//ResetVisited();
+	return;
 }
 
 void Graph::Draw()
@@ -243,4 +245,9 @@ void Graph::EdgeMap()
 			}
 		}
 	}
+}
+
+float Graph::DistanceTo(GraphNode* aStart, GraphNode* aEnd)
+{
+	return sqrt(((aEnd->mX - aStart->mX) * (aEnd->mX - aStart->mX)) + ((aEnd->mY - aStart->mY) * (aEnd->mY - aStart->mY)));
 }
