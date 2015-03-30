@@ -27,19 +27,29 @@ public:
 	void ResetVisited();
 	void Draw();
 	void IsKill();
+
 	//RETURNS TRUE IF astart CAN FIND aend
 	bool SearchDFS(GraphNode* aStart, GraphNode* aEnd);
-	//STAR SEARCH
-	void SearchSTAR(GraphNode* aStart, GraphNode* aEnd);
+
 	//DIJKSTRA SEARCH
 	void Dijkstra(GraphNode* aStart, GraphNode* aEnd);
-	unsigned int mGridW, mGridH, mCurNode;
 
+	//STAR SEARCH
+	void SearchSTAR(GraphNode* aStart, GraphNode* aEnd);
+
+	//Takes in Graphnodes a,b,c,d and aEnd, returns closest to aEnd
+	GraphNode* Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd);
+	GraphNode* Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd);
+	GraphNode* Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* dGN, GraphNode* aEnd);
+
+	//Returns distance from node aStart to node aEnd
 	float DistanceTo(GraphNode* aStart, GraphNode* aEnd);
 
-	float mTileSize, mX, mY;
+
 	NodeList mNodes;
 private:
+	unsigned int mGridW, mGridH, mCurNode;
+	float mTileSize, mX, mY;
 	void EdgeMap();
 };
 

@@ -156,37 +156,100 @@ void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 
 void Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
 {
-	std::queue<GraphNode*> oNodeStack;
+	std::vector<GraphNode*> NodeStack;
 	aStart->mPath = 0;
-	oNodeStack.push(aStart);
-	while (!oNodeStack.empty())
+	NodeStack.push_back(aStart);
+	while (!NodeStack.empty())
 	{
-		GraphNode* pCurrent = oNodeStack.back();
-		oNodeStack.pop();
-		if (pCurrent->mVisited == true)
+		GraphNode* Current = NodeStack.back();
+		NodeStack.pop_back();
+		if (Current->mVisited)
 		{
 			continue;
 		}
-		pCurrent->mState = 2;
-
-		pCurrent->mVisited = true;
-
-		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
-		{
-			pCurrent->mState = 3;
-			pCurrent->mVisited = true;
+		Current->mVisited = true;
+		if (Current->mNodeNumber == aEnd->mNodeNumber)
 			return;
-		}
-		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
+		switch (Current->mEdges.size())
 		{
-			if (!pCurrent->mEdges[i].mEnd->mVisited)
-				pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
-			oNodeStack.push(pCurrent->mEdges[i].mEnd);
-		}
+		case 0:
+			break;
+		case 1:
+			NodeStack.push_back(Current->mEdges[0].mEnd);
+			Current->mEdges[0].mEnd->mState = 2;
+			break;
+		case 2:
+			NodeStack.push_back(Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, aEnd));
+			Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, aEnd)->mState = 2;
+			break;
+		case 3:
+			NodeStack.push_back(Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, Current->mEdges[2].mEnd, aEnd));
+			Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, Current->mEdges[2].mEnd, aEnd)->mState = 2;
+			break;
+		case 4:
+			NodeStack.push_back(Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, Current->mEdges[2].mEnd, Current->mEdges[3].mEnd, aEnd));
+			Closest(Current->mEdges[0].mEnd, Current->mEdges[1].mEnd, Current->mEdges[2].mEnd, Current->mEdges[3].mEnd, aEnd)->mState = 2;
+			break;
+
+		};
 	}
-	//ResetVisited();
-	return;
 }
+
+//void Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
+//{
+//	std::vector<GraphNode*> oNodeStack;
+//	aStart->mPath = 0;
+//	oNodeStack.push_back(aStart);
+//	while (!oNodeStack.empty())
+//	{
+//		GraphNode* pCurrent = oNodeStack.back();
+//		oNodeStack.pop_back();
+//		if (pCurrent->mVisited == true)
+//		{
+//			continue;
+//		}
+//		pCurrent->mState = 2;
+//
+//		pCurrent->mVisited = true;
+//
+//		if (pCurrent->mNodeNumber == aEnd->mNodeNumber)
+//		{
+//			pCurrent->mState = 3;
+//			pCurrent->mVisited = true;
+//			return;
+//		}
+//		if (pCurrent->mEdges.size() == 1)
+//		{
+//			if (!pCurrent->mEdges[0].mEnd->mVisited)
+//				pCurrent->mEdges[0].mEnd->mPath = pCurrent->mPath + 1;
+//			oNodeStack.push_back(pCurrent->mEdges[0].mEnd);
+//		}
+//		else
+//		{
+//			float edgeSize = oNodeStack.size();
+//			for (int i = 0; i < pCurrent->mEdges.size(); ++i)
+//			{
+//				if (DistanceTo(pCurrent, aEnd) > DistanceTo(pCurrent->mEdges[i].mEnd, aEnd))
+//				{
+//					if (!pCurrent->mEdges[i].mEnd->mVisited)
+//						pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
+//					oNodeStack.push_back(pCurrent->mEdges[i].mEnd);
+//				}
+//			}
+//			if (edgeSize == oNodeStack.size())
+//			{
+//				for (int i = 0; i < pCurrent->mEdges.size(); ++i)
+//				{
+//					if (!pCurrent->mEdges[i].mEnd->mVisited)
+//						pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
+//					oNodeStack.push_back(pCurrent->mEdges[i].mEnd);
+//				}
+//			}
+//		}
+//	}
+//	ResetVisited();
+//	return;
+//}
 
 void Graph::Draw()
 {
@@ -229,10 +292,10 @@ void Graph::EdgeMap()
 		{
 			for (int ii = 0; ii < mGridH; ii++)
 			{
-				int ia = ii + (i * mGridH) - 1;
-				int ib = ii + (i * mGridH) + 1;
-				int ic = ii + ((i - 1) * mGridH);
-				int id = ii + ((i + 1) * mGridH);
+				//int ia = ii + (i * mGridH) - 1;
+				//int ib = ii + (i * mGridH) + 1;
+				//int ic = ii + ((i - 1) * mGridH);
+				//int id = ii + ((i + 1) * mGridH);
 				if (ii > 0 )
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + (i * mGridH) - 1]);
 				if (ii < mGridH - 1)
@@ -241,10 +304,54 @@ void Graph::EdgeMap()
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + ((i - 1) * mGridH)]);
 				if (i < mGridW - 1)
 					mNodes[ii + (i * mGridH)]->AddEdgeTo(mNodes[ii + ((i + 1) * mGridH)]);
-
 			}
 		}
 	}
+}
+
+GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd)
+{
+	if (DistanceTo(bGN, aEnd) < DistanceTo(aGN, aEnd))
+		return aGN;
+	return bGN;
+}
+
+GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd)
+{
+	if (DistanceTo(bGN, aEnd) < DistanceTo(aGN, aEnd))
+	{
+		if (DistanceTo(cGN, aEnd) < DistanceTo(bGN, aEnd))
+			return cGN;
+		return bGN;
+	}
+	if (DistanceTo(aGN, aEnd) < DistanceTo(cGN, aEnd))
+		return aGN;
+	return cGN;
+}
+
+GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* dGN, GraphNode* aEnd)
+{
+	if (DistanceTo(bGN, aEnd) < DistanceTo(aGN, aEnd))
+	{
+		if (DistanceTo(cGN, aEnd) < DistanceTo(bGN, aEnd))
+		{
+			if (DistanceTo(cGN, aEnd) < DistanceTo(dGN, aEnd))
+				return cGN;
+			return dGN;
+		}
+		if (DistanceTo(bGN, aEnd) < DistanceTo(dGN, aEnd))
+			return bGN;
+		return dGN;
+	}
+	if (DistanceTo(aGN, aEnd) < DistanceTo(cGN, aEnd))
+	{
+		if (DistanceTo(aGN, aEnd) < DistanceTo(dGN, aEnd))
+			return aGN;
+		return dGN;
+	}
+	if (DistanceTo(cGN, aEnd) < DistanceTo(dGN, aEnd))
+		return cGN;
+	return dGN;
 }
 
 float Graph::DistanceTo(GraphNode* aStart, GraphNode* aEnd)
