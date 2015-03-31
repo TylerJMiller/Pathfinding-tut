@@ -57,7 +57,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;./include/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\libs\glm;.\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -93,17 +93,21 @@
     <ClCompile Include="source\Edge.cpp" />
     <ClCompile Include="source\Graph.cpp" />
     <ClCompile Include="source\GraphNode.cpp" />
+    <ClCompile Include="source\Hunter.cpp" />
     <ClCompile Include="source\KeyStater.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Tank.cpp" />
+    <ClCompile Include="source\Wander.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Edge.h" />
     <ClInclude Include="include\Graph.h" />
     <ClInclude Include="include\GraphNode.h" />
+    <ClInclude Include="include\Hunter.h" />
     <ClInclude Include="include\KeyStater.h" />
     <ClInclude Include="include\Tank.h" />
     <ClInclude Include="include\Util.h" />
+    <ClInclude Include="include\Wander.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -109,7 +109,7 @@ void Graph::ResetVisited()
 bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 {
 	std::queue<GraphNode*> oNodeStack;
-	aStart->mPath = 0;
+	aStart->mPathScore = 0;
 	oNodeStack.push(aStart);
 	while (!oNodeStack.empty())
 	{
@@ -130,7 +130,7 @@ bool Graph::SearchDFS(GraphNode* aStart, GraphNode* aEnd)
 		for (int i = 0; i < pCurrent->mEdges.size(); ++i)
 		{
 			if (!pCurrent->mEdges[i].mEnd->mVisited)
-				pCurrent->mEdges[i].mEnd->mPath = pCurrent->mPath + 1;
+				pCurrent->mEdges[i].mEnd->mPathScore = pCurrent->mPathScore + 1;
 			oNodeStack.push(pCurrent->mEdges[i].mEnd);
 		}
 	}
@@ -143,9 +143,9 @@ void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 	GraphNode* pCurrent = aEnd;
 	for (int j = 0; j < pCurrent->mEdges.size(); j++)
 	{
-		if (pCurrent->mEdges[j].mEnd->mPath == pCurrent->mPath - 1)
+		if (pCurrent->mEdges[j].mEnd->mPathScore == pCurrent->mPathScore - 1)
 		{
-			if (pCurrent->mPath == 1)
+			if (pCurrent->mPathScore == 1)
 				return;
 			pCurrent->mEdges[j].mEnd->mState = 3;
 			pCurrent = pCurrent->mEdges[j].mEnd;
@@ -157,7 +157,7 @@ void Graph::Dijkstra(GraphNode* aStart, GraphNode* aEnd)
 void Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
 {
 	std::vector<GraphNode*> NodeStack;
-	aStart->mPath = 0;
+	aStart->mPathScore = 0;
 	NodeStack.push_back(aStart);
 	while (!NodeStack.empty())
 	{
@@ -356,8 +356,7 @@ GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphN
 	return dGN;
 }
 
-typedef std::vector<GraphNode*> NodeList;
-
+//typedef std::vector<GraphNode*> NodeList;
 //NodeList* Graph::ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd)
 //{
 //	NodeList closestNodes;

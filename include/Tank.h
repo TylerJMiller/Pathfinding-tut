@@ -6,10 +6,10 @@
 class Tank
 {
 public:
-	void init(int ax, int ay, unsigned int asprite);
 	void move(int ax, int ay);
-	Tank(){};
-	~Tank(){};
+	Tank();
+	Tank(int ax, int ay, unsigned int asprite);
+	~Tank();
 	unsigned int gridX, gridY, sprite;
 	void Draw();
 	int nodeNum();

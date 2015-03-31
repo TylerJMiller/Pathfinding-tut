@@ -8,7 +8,8 @@ class GraphNode;
 struct Edge
 {
 	Edge();
-	int mCost = 1;
+	~Edge();
+	int mCost;
 	GraphNode* mStart;
 	GraphNode* mEnd;
 };

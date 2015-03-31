@@ -31,7 +31,7 @@ void KeyStater::Update()
 	GetKeyboardState(curStates);
 	GetCursorPos(&curs);
 	ScreenToClient(thiswindow, &curs);
-	curs.y = maxHeight - curs.y;
+	curs.y = WINDOWHEIGHT - curs.y;
 }
 
 void KeyStater::Debug()

@@ -1,0 +1,43 @@
+INDEX
+#####
+1		AI BEHAVIORS
+	1.1	SEEK/FLEE
+	1.2	WANDER
+#####
+2		PATHFINDING
+	2.1	DIJKSTRA
+	2.2	A*
+#####
+3		CONTROLS
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+1	AI BEHAVIORS
+	I have created and demonstrated two AI behaviors in this project. The AI with the circle sprite is seeking the AI with the square sprite, and the AI with the square sprite is wandering around the map, looping to the opposite side of the map if it hits an edge.
+
+1.1	SEEK/FLEE
+	The seek and flee behaviors work by creating and normalizing a vector from the current position to a target position, and multiplying that vector by the speed and adding/subtracting it to the current position.
+
+1.2	WANDER
+	The wander behavior works by generating a random vector with X and Y values between -1 and 1, multiplying it by the Jitter factor, adding it to the current direction vector, and then normalizing the direction vector.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+2	PATHFINDING
+	I have also created a grid with a start position (marked with a small white square) and an end position (always the upper right). The start position can be changed and the grid nodes can be turned into walls. By pressing the buttons listed below, a path from the start position to the end position will be found (or not found if there isn't one) and the explored nodes will be highlited.
+
+2.1	DIJKSTRA
+	Dijkstra pathfinding is done by choosing the end node of the edge with the lowest score, starting at the current node, until the current node is the end node. The path it found is then reversed and highlighted.
+
+2.2	A*
+	A* works by finding the distance from the end node of each edge node to the goal node and choosing the one with the smallest distance that is also unvisited. If there are no unvisited nodes, it reverses direction and follows the parent node until an end node of at least one of the edges is unvisited. If a path is found, the visited nodes are highlighted.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+3	CONTROLS
+	K	Finds and displays visited nodes using A*
+	L	Finds and displays visted and pathed nodes using Dijkstra
+	I	Resets all non-wall nodes in the grid (this also happens right before pathfinding)
+	N 	Toggles wandering on/off and resets SQUARE's vector direction
+	LMOUSE	Changes the position of the pathfinding start node
+	RMOUSE	Hold to place wall nodes on the grid

@@ -1,23 +1,33 @@
 #include "Tank.h"
 
-void Tank::init(int ax, int ay, unsigned int asprite)
+Tank::Tank()
+{
+}
+
+Tank::Tank(int ax, int ay, unsigned int asprite)
 {
 	gridX = ax;
 	gridY = ay;
 	sprite = asprite;
+
 }
+
+Tank::~Tank()
+{
+}
+
 void Tank::move(int ax, int ay)
 {
-	gridX = (int)((ax - graphX) / tileSize);
-	gridY = (int)((ay - graphY + tileSize) / tileSize);
+	gridX = (int)((ax - GRAPHX) / TILESIZE);
+	gridY = (int)((ay - GRAPHY + TILESIZE) / TILESIZE);
 }
 int Tank::nodeNum()
 {
-	return gridX + (gridY * graphH);
+	return gridX + (gridY * GRAPHHEIGHT);
 }
 
 void Tank::Draw()
 {
-	MoveSprite(sprite, (gridX * tileSize) + graphX + (tileSize/4), (gridY * tileSize) + graphY - (tileSize/4));
+	MoveSprite(sprite, (gridX * TILESIZE) + GRAPHX + (TILESIZE / 4), (gridY * TILESIZE) + GRAPHY - (TILESIZE / 4));
 	DrawSprite(sprite);
 }

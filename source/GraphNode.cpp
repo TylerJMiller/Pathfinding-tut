@@ -8,8 +8,12 @@ GraphNode::GraphNode(int aNum, float aX, float aY)
 	mVisited = false;
 	mState = 0;
 	mEdges.resize(0);
-	mPath = -1;
+	mPathScore = -1;
+	mParent = NULL;
+}
 
+GraphNode::~GraphNode()
+{
 }
 
 void GraphNode::AddEdgeTo(GraphNode* aEnd)
