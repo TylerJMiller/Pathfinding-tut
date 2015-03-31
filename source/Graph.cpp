@@ -169,7 +169,9 @@ void Graph::SearchSTAR(GraphNode* aStart, GraphNode* aEnd)
 		}
 		Current->mVisited = true;
 		if (Current->mNodeNumber == aEnd->mNodeNumber)
-			return;
+		{
+			continue;
+		}
 		switch (Current->mEdges.size())
 		{
 		case 0:
@@ -312,8 +314,8 @@ void Graph::EdgeMap()
 GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd)
 {
 	if (DistanceTo(bGN, aEnd) < DistanceTo(aGN, aEnd))
-		return aGN;
-	return bGN;
+		return bGN;
+	return aGN;
 }
 
 GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd)
@@ -353,6 +355,28 @@ GraphNode* Graph::Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphN
 		return cGN;
 	return dGN;
 }
+
+typedef std::vector<GraphNode*> NodeList;
+
+//NodeList* Graph::ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd)
+//{
+//	NodeList closestNodes;
+//	if (DistanceTo(aGN, aEnd) < DistanceTo(bGN, aEnd))
+//	{
+//		closestNodes.push_back(bGN);
+//
+//	}
+//	
+//}
+//NodeList* Graph::ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd)
+//{
+//
+//}
+//NodeList* Graph::ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* dGN, GraphNode* aEnd)
+//{
+//
+//}
+
 
 float Graph::DistanceTo(GraphNode* aStart, GraphNode* aEnd)
 {

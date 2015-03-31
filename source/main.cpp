@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 		if (Keys.IsPressed(VK_K))
 		{
 			theGraph.SearchSTAR(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]);
-			theGraph.Dijkstra(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]);
+			//theGraph.Dijkstra(theGraph.mNodes[theTank.nodeNum()], theGraph.mNodes[(graphH * graphW) - 1]);
 		}
 		if (Keys.IsPressed(VK_L))
 		{

@@ -42,6 +42,12 @@ public:
 	GraphNode* Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd);
 	GraphNode* Closest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* dGN, GraphNode* aEnd);
 
+	//Takes in Graphnodes a,b,c,d and aEnd, returns closest to aEnd
+	NodeList* ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* aEnd);
+	NodeList* ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* aEnd);
+	NodeList* ListClosest(GraphNode* aGN, GraphNode* bGN, GraphNode* cGN, GraphNode* dGN, GraphNode* aEnd);
+
+
 	//Returns distance from node aStart to node aEnd
 	float DistanceTo(GraphNode* aStart, GraphNode* aEnd);
 
